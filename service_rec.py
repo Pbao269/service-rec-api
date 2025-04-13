@@ -2,6 +2,11 @@ from fastapi import FastAPI, HTTPException, Body
 from pydantic import BaseModel, Field
 from faker import Faker
 import uvicorn
+from fastapi.middleware.cors import CORSMiddleware
+import os
+from dotenv import load_dotenv
+
+load_dotenv()  # Load variables from .env file
 
 fake = Faker()
 
@@ -67,6 +72,26 @@ class CustomerInput(BaseModel):
     Loan_Purpose: str = Field(..., alias="Loan Purpose")
 
 app = FastAPI(title="Bank Recommendation API", description="Provides product ranking based on customer data.")
+
+# Define allowed origins using environment variables
+origins = [
+    os.getenv("FRONTEND_URL_DEV"),
+    os.getenv("FRONTEND_URL_PROD"),
+    os.getenv("BACKEND_URL_DEV"),
+    os.getenv("BACKEND_URL_PROD"),
+]
+
+# Filter out None values in case some variables are not set
+origins = [origin for origin in origins if origin is not None]
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # Use the loaded origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
 
 @app.post("/recommend")
 def recommend_product(customer: CustomerInput = Body(...)):

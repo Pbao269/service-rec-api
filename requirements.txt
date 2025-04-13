@@ -1,5 +1,8 @@
 fastapi
-uvicorn
+uvicorn[standard]
+pydantic
+Faker
+python-dotenv
 pandas
 faker
 python-dateutil
