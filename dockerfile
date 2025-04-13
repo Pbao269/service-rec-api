@@ -11,8 +11,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of your application code to the container
 COPY . .
 
-# Expose port 8000 for the API
-EXPOSE 8000
+# Let the platform assign the port
+ENV PORT=8001
+
+# Expose the port the app runs on
+EXPOSE ${PORT}
 
 # Define the command to run your application using uvicorn
-CMD ["uvicorn", "service_rec:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD uvicorn service_rec:app --host 0.0.0.0 --port ${PORT}
