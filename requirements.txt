@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+pandas
+faker
+python-dateutil
+scikit-learn
