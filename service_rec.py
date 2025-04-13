@@ -73,6 +73,17 @@ class CustomerInput(BaseModel):
 
 app = FastAPI(title="Bank Recommendation API", description="Provides product ranking based on customer data.")
 
+# Add this new root endpoint
+@app.get("/")
+def read_root():
+    return {
+        "message": "Welcome to Bank Recommendation API",
+        "documentation": "/docs",
+        "endpoints": {
+            "recommend": "/recommend"
+        }
+    }
+
 # Define allowed origins using environment variables
 origins = [
     os.getenv("FRONTEND_URL_DEV"),
